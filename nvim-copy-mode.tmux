@@ -44,3 +44,10 @@ clipboard_option="@nvim_copy_mode_clipboard"
 clipboard_default="wl-copy"
 clipboard_value="$(query "$clipboard_option")"
 tmux set-environment -g COPY_MODE_CLIPBOARD "${clipboard_value:-$clipboard_default}"
+
+# CLOSING DELAY
+closing_delay_option="@nvim_copy_mode_closing_delay"
+closing_delay_default="150"
+closing_delay_value="$(query "$closing_delay_option")"
+tmux set-environment -g COPY_MODE_CLOSING_DELAY "${closing_delay_value:-$closing_delay_default}"
+

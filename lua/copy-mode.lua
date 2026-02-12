@@ -1,14 +1,18 @@
 local file = vim.env.COPY_FILE
 
 local clipboard = os.getenv("COPY_MODE_CLIPBOARD")
+local closing_delay = tonumber(os.getenv("COPY_MODE_CLOSING_DELAY")) or 0
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Pipe yanked text into clipboard(s)",
 	callback = function()
 		local text = table.concat(vim.v.event.regcontents, "\n")
 		vim.opt.cursorline = false
-		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 150 })
+		vim.highlight.on_yank({ higroup = "IncSearch", timeout = closing_delay })
 		vim.fn.jobstart({ "tmux", "set-buffer", "--", text }, { detach = true })
 		vim.fn.jobstart({ clipboard, "--", text }, { detach = true })
+		vim.defer_fn(function()
+			vim.cmd("qa!")
+		end, closing_delay)
 	end,
 })
 
