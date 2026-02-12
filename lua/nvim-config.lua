@@ -2,7 +2,13 @@
 vim.opt.termguicolors = false
 vim.opt.lazyredraw = true
 vim.opt.cursorline = true
-vim.cmd("hi CursorLine ctermbg=6 ctermfg=0 cterm=NONE")
+local cursorline_bg = os.getenv("COPY_MODE_CURSORLINE_BG")
+local cursorline_fg = os.getenv("COPY_MODE_CURSORLINE_FG")
+vim.api.nvim_set_hl(0, "CursorLine", {
+	ctermfg = tonumber(cursorline_fg),
+	ctermbg = tonumber(cursorline_bg),
+	cterm = nil,
+})
 
 -- Hide all chrome
 vim.opt.signcolumn = "no"

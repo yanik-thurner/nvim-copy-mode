@@ -23,14 +23,3 @@ vim.keymap.set("n", "<C-l>", exit_pane("R"), { silent = true })
 for i = 1, #"aAiIoORcCsSdDxXrpPuUQ" do
 	vim.keymap.set("n", ("aAiIoORcCsSdDxXrpPuUQ"):sub(i, i), "<Nop>")
 end
-
-vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Pipe yanked text into clipboard(s)",
-	callback = function()
-		local text = table.concat(vim.v.event.regcontents, "\n")
-		vim.opt.cursorline = false
-		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 150 })
-		vim.fn.jobstart({ "wl-copy", "--", text }, { detach = true })
-		vim.fn.jobstart({ "tmux", "set-buffer", "--", text }, { detach = true })
-	end,
-})

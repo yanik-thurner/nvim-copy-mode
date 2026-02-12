@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# ~/.config/tmux/scripts/nvim-copy-mode.sh
 read -r pane_id cursor_x cursor_y history_size pane_width pane_height \
   <<< "$(tmux display -p '#{pane_id} #{cursor_x} #{cursor_y} #{history_size} #{pane_width} #{pane_height}')"
 

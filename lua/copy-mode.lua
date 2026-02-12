@@ -1,5 +1,17 @@
 local file = vim.env.COPY_FILE
 
+local clipboard = os.getenv("COPY_MODE_CLIPBOARD")
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Pipe yanked text into clipboard(s)",
+	callback = function()
+		local text = table.concat(vim.v.event.regcontents, "\n")
+		vim.opt.cursorline = false
+		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 150 })
+		vim.fn.jobstart({ "tmux", "set-buffer", "--", text }, { detach = true })
+		vim.fn.jobstart({ clipboard, "--", text }, { detach = true })
+	end,
+})
+
 local f = io.open(file, "r")
 local raw = f:read("*a"):gsub("\n+$", "")
 local number_of_lines = select(2, raw:gsub("\n", ""))
