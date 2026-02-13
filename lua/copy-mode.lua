@@ -17,7 +17,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 local f = io.open(file, "r")
-local raw = f:read("*a"):gsub("\n+$", "")
+local raw = f:read("*a"):gsub("\n$", "")
 local number_of_lines = select(2, raw:gsub("\n", ""))
 f:close()
 
