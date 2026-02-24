@@ -24,6 +24,9 @@ vim.opt.shortmess:append("I")
 vim.opt.swapfile = false
 vim.opt.virtualedit = "onemore"
 
+vim.opt.shadafile = "/dev/shm/nvim-copy-mode.shada"
+vim.opt.shada = "'0,/100"
+
 -- Search settings
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
