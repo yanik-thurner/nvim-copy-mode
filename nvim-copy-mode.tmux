@@ -2,7 +2,7 @@
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 query() {
-  tmux show-option -gqv "$1"
+    tmux show-option -gqv "$1"
 }
 
 #### SETTINGS ####
@@ -12,21 +12,24 @@ activate_option="@nvim_copy_mode_activate"
 activate_value="$(query "$activate_option")"
 
 if [[ -n $activate_value ]]; then
-        tmux bind-key -n "$activate_value" run-shell "$CURRENT_DIR/launch.sh"
+    tmux bind-key -n "$activate_value" run-shell "$CURRENT_DIR/launch.sh"
 else
-        while IFS= read -r line; do
-            table=$(echo "$line" | awk '{print $3}')
-            key=$(echo "$line" | awk '{print $4}')
+    while IFS= read -r line; do
+        table=$(echo "$line" | awk '{print $3}')
+        key=$(echo "$line" | awk '{print $4}')
 
-            tmux bind-key -T "$table" "$key" run-shell "$CURRENT_DIR/launch.sh"
-        done < <(tmux list-keys | grep -E 'copy-mode(-vi)?$')
+        tmux bind-key -T "$table" "$key" run-shell "$CURRENT_DIR/launch.sh"
+    done < <(tmux list-keys | grep -E 'copy-mode(-vi)?$')
 fi
 
 # ACTIVATION PREFIXLESS
 activate_prefixless_option="@nvim_copy_mode_activate_prefixless"
-activate_prefixless_default="C-y"
+activate_prefixless_default=""
 activate_prefixless_value="$(query "$activate_prefixless_option")"
-tmux bind-key -n "${activate_prefixless_value:-$activate_prefixless_default}" run-shell "$CURRENT_DIR/launch.sh"
+activate_prefixless_concrete="${activate_prefixless_value:-$activate_prefixless_default}"
+if [[ -n $activate_prefixless_concrete ]]; then
+    tmux bind-key -n "${activate_prefixless_value:-$activate_prefixless_default}" run-shell "$CURRENT_DIR/launch.sh"
+fi
 
 # CURSORLINE COLORS
 cursorline_bg_option="@nvim_copy_mode_cursorline_bg"
